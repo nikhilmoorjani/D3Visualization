@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+<meta charset="UTF-8">
+<title>CSCI 572 HW3</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="d3.v3.min.js"></script>
+<script src="topojson.v1.min.js"></script>
+<script src="datamaps.world.min.js"></script>
+<script src="angular.js"></script>
+<script src="d3.layout.cloud.js"></script>
+<script type="text/javascript" src="form.js"></script>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+<body ng-controller="UserController as usr">
+
+<div class="container-fluid">
+    <div class="row">
+		<div class="col-md-12">
+			<h3>Welcome to CS 572 Analytics Dashboard</h3>
+
+			<div class="tabbable-panel">
+				<div class="tabbable-line">
+					<ul class="nav nav-tabs ">
+						<li class="active">
+							<a href="#tab_default_1" data-toggle="tab">
+							D3 </a>
+						</li>
+						<li>
+							<a href="#tab_default_2" data-toggle="tab">
+							Banana </a>
+						</li>
+						<li>
+							<a href="#tab_default_3" data-toggle="tab">
+							FacetView </a>
+						</li>
+						<li>
+							<a href="#tab_default_4" data-toggle="tab">
+							Clavin Vis </a>
+						</li>						
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active fade in" id="tab_default_1">
+						
+							<div class="row">
+							  <div class="col-xs-4">
+							    <input type="text" class="form-control" placeholder="Enter query string" data-ng-model="query" id="query-form">
+							  </div>
+							  <div class="col-xs-2">
+							    <input type="text" class="form-control" placeholder="fq" data-ng-model="fq" id="fq-form">
+							  </div>
+							  <input class="btn btn-info" type="button" id="searchbtn" value="Search" ng-click="usr.urlCreate(query)">
+							  <input class="btn btn-danger" type="button" id="clearbtn" value="Clear">
+							  <br><br>
+							</div>						
+							<div class="gallery-d3">
+								<div class="row">
+				        			<div class="col-md-4"><img class="img-responsive bubblechart" src="bubblechart.png" /><div class="text">&nbsp;&nbsp;Bubblechart</div></div>
+					    			<div class="col-md-4"><img class="img-responsive calendarview" src="calenderview.png" /><div class="text">Calendar View</div></div>
+				        			<div class="col-md-4"><img class="img-responsive circlepacking" src="circlepacking.png" /><div class="text">Circle Packing</div></div>							
+								</div>
+								<br><br>
+								<div class="row">
+				        			<div class="col-md-4"><img class="img-responsive datamaps" src="datamaps.png" /><div class="text">&nbsp;&nbsp;Data Maps</div></div>
+					    			<div class="col-md-4"><img class="img-responsive dendogram" src="dendograph.png" /><div class="text">Dendograms</div></div>
+				        			<div class="col-md-4"><img class="img-responsive wordcloud" src="wordcloud.png" /><div class="text">&nbsp;&nbsp;Word Cloud</div></div>							
+								</div>							
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab_default_2">
+							<iframe style="width:100%;height:100%;resize: both; overflow: auto" src="http://localhost:8080/banana/src/index.html"></iframe>						
+						</div>
+						<div class="tab-pane fade" id="tab_default_3">
+							<iframe style="width:100%;height:100%;resize: both; overflow: auto" src="http://localhost:8080/facetview/facetview.html"></iframe>
+						</div>
+						<div class="tab-pane fade" id="tab_default_4"><input class="btn btn-primary clavin" type="button" value="Visualize Clavin Data!">
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<br>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+			<div class="row forWordCloud">
+			  <div class="col-md-3 col-md-offset-3"><input class="btn btn-primary topics" type="button" value="Topics"></div>
+			  <div class="col-md-3"><input class="btn btn-primary categories" type="button" value="Categories"></div>
+			  <div class="col-md-3"><input class="btn btn-primary locations" type="button" value="Locations"></div>
+			</div>    
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready( function() {
+	$('#myModal').modal('hide');
+	$('.modal-dialog').css("width","90%");
+	$('.modal-title').text("");
+	$('.gallery-d3').hide();
+	$('#clearbtn').click(function(){
+		$('#query-form').val("");
+		$('#fq-form').val("");
+		$('.gallery-d3').hide();
+		$('#myModal').modal('hide');
+	});
+	$('.img-responsive').hover(function() {
+	    $(this).stop().animate({opacity:.4},200);
+	    $(this).next().fadeIn(200);
+
+	}, function() {
+	    $(this).stop().animate({opacity:1},500);
+	    $(this).next().fadeOut(100);
+	});
+	$('#searchbtn').click(function(){
+		$('.gallery-d3').fadeIn(300);
+	});
+	$('.bubblechart').click(type1);
+	$('.calendarview').click(type2);
+	$('.circlepacking').click(type3);
+	$('.datamaps').click(type4);
+	$('.dendogram').click(type5);
+	$('.wordcloud').click(type6);
+	$('#myModal').on('hidden.bs.modal',function(e){
+		$('svg').remove();
+		$('#container1').remove();
+	});
+	
+	$('.clavin').click(function(){
+		window.open("http://localhost:8080/clavin/corpus.html", '_blank');
+	})
+		
+});
+function type1(){
+	$('.modal-title').text("Bubble Chart");
+	$('.forWordCloud').hide();
+	var diameter = 960,
+    format = d3.format(",d"),
+    color = d3.scale.category20c();
+
+    var x = $('body').scope().bubble;
+    var str = JSON.stringify(x);
+    var json = $.parseJSON(str);
+    var json2 = json.bubbleChart;
+	var bubble = d3.layout.pack()
+	    .sort(null)
+	    .size([diameter, diameter])
+	    .padding(1.5);
+
+	var svg = d3.select(".modal-body").append("svg")
+	    .attr("class","center-block")
+		.attr("width", diameter)
+	    .attr("height", diameter)
+	    .attr("class", "bubble center-block");
+	var node = svg.selectAll(".node")
+	      .data(bubble.nodes(classes(json2))
+	      .filter(function(d) { return !d.children; }))
+	      .enter().append("g")
+	      .attr("class", "node")
+	      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+	node.append("title")
+	      .text(function(d) { return d.className + ": " + format(d.value); });
+	
+	node.append("circle")
+	      .attr("r", function(d) { return d.r; })
+	      .style("fill", function(d) { return color(d.packageName); });
+	
+	node.append("text")
+	      .attr("dy", ".3em")
+	      .style("text-anchor", "middle")
+	      .text(function(d) { return d.className.substring(0, d.r / 3); });
+
+	function classes(root) {
+	  var classes = [];
+	
+	  function recurse(name, node) {
+	    if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
+	    else classes.push({packageName: name, className: node.name, value: node.size});
+	  }
+	
+	  recurse(null, root);
+	  return {children: classes};
+	}
+
+	d3.select(self.frameElement).style("height", diameter + "px");	
+	
+	$('#myModal').modal('show');
+}
+function type2(){
+	$('.modal-title').text("Calendar View");
+	$('.forWordCloud').hide();
+	
+	var width = 960,
+    height = 136,
+    cellSize = 17;
+
+	var day = d3.time.format("%w"),
+	    week = d3.time.format("%U"),
+	    percent = d3.format(".1%"),
+	    format = d3.time.format("%Y-%m-%d");
+	
+	var color = d3.scale.quantize()
+	    .domain([1,20])
+	    .range(d3.range(11).map(function(d) { return "q" + d + "-11"; }));
+	
+	var svg = d3.select(".modal-body").selectAll("svg")
+	    .data(d3.range(1950, 2016))
+	  .enter().append("svg")
+	    .attr("width", width)
+	    .attr("height", height)
+	    .attr("class", "RdYlGn center-block")
+	  .append("g")
+	    .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
+	
+	svg.append("text")
+	    .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
+	    .style("text-anchor", "middle")
+	    .text(function(d) { return d; });
+	
+	var rect = svg.selectAll(".day")
+	    .data(function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+	  .enter().append("rect")
+	    .attr("class", "day")
+	    .attr("width", cellSize)
+	    .attr("height", cellSize)
+	    .attr("x", function(d) { return week(d) * cellSize; })
+	    .attr("y", function(d) { return day(d) * cellSize; })
+	    .datum(format)
+	
+	rect.append("title")
+	    .text(function(d) { return d; });
+	
+	svg.selectAll(".month")
+	    .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
+	  .enter().append("path")
+	    .attr("class", "month")
+	    .attr("d", monthPath);
+	
+    var x = $('body').scope().calendar;
+    var json2 = x['calendarView'];
+	var jsonConvertd = {} 
+	
+	$.each(json2, function(key, value){
+	    $.each(value, function(key, value){
+	        console.log(value[0]);
+	        jsonConvertd[value[0]] = value[1]
+	    });
+	});
+	
+	data = jsonConvertd
+	    
+	  rect.filter(function(d) { return d in data; })
+	      .attr("class", function(d) { 
+	          console.log('day text', data[d]);
+	          return "day " + color(data[d]); 
+	      })
+	    .select("title");
+	
+	function monthPath(t0) {
+	  var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+	      d0 = +day(t0), w0 = +week(t0),
+	      d1 = +day(t1), w1 = +week(t1);
+	  return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
+	      + "H" + w0 * cellSize + "V" + 7 * cellSize
+	      + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
+	      + "H" + (w1 + 1) * cellSize + "V" + 0
+	      + "H" + (w0 + 1) * cellSize + "Z";
+	}
+	
+	d3.select(self.frameElement).style("height", "2910px");	
+	
+	$('#myModal').modal('show');
+}
+function type3(){
+	$('.modal-title').text("Circle Packing");
+	$('.forWordCloud').hide();
+	
+    var x = $('body').scope().circlePacking;
+    var str = JSON.stringify(x);
+    var json = $.parseJSON(str);
+    var json2 = json.circlePacking;
+    
+	var diameter = 960,
+    format = d3.format(",d");
+
+	var pack = d3.layout.pack()
+	    .size([diameter - 4, diameter - 4])
+	    .value(function(d) { return d.size; });
+	
+	var svg = d3.select(".modal-body").append("svg")
+	    .attr("width", diameter)
+	    .attr("height", diameter)
+	    .attr("class", "center-block")
+	    .append("g")
+	    .attr("transform", "translate(2,2)");
+	
+	var node = svg.datum(json2).selectAll(".node")
+	      .data(pack.nodes)
+	      .enter().append("g")
+	      .attr("class", function(d) { return d.children ? "node" : "leaf node"; })
+	      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+	
+	node.append("title")
+	      .text(function(d) { return d.name + (d.children ? "" : ": " + format(d.size)); });
+	
+	node.append("circle")
+	      .attr("r", function(d) { return d.r; });
+	
+	node.filter(function(d) { return !d.children; }).append("text")
+	      .attr("dy", ".3em")
+	      .style("text-anchor", "middle")
+	      .text(function(d) { return d.name.substring(0, d.r / 3); });
+	
+	d3.select(self.frameElement).style("height", diameter + "px");	
+	
+	$('#myModal').modal('show');
+}
+function type4(){
+	
+	var url = "http://localhost:8080/datamap/datamaps.html";
+	
+	window.open(url, '_blank');
+	
+}
+function type5(){
+	$('.modal-title').text("Dendogram");
+	$('.forWordCloud').hide();
+
+    var x = $('body').scope().dendogram;
+    var str = JSON.stringify(x);
+    var json = $.parseJSON(str);
+    var json2 = json.dendogram;	
+	
+	var width = 960,
+    height = 2200;
+
+	var cluster = d3.layout.cluster()
+	    .size([height, width - 160]);
+	
+	var diagonal = d3.svg.diagonal()
+	    .projection(function(d) { return [d.y, d.x]; });
+	
+	var svg = d3.select(".modal-body").append("svg")
+	    .attr("width", width)
+	    .attr("height", height)
+	    .attr("class", "center-block")
+	    .append("g")
+	    .attr("transform", "translate(40,0)");
+	
+	var nodes = cluster.nodes(json2),
+	      links = cluster.links(nodes);
+	
+	var link = svg.selectAll(".link")
+	      .data(links)
+	      .enter().append("path")
+	      .attr("class", "link")
+	      .attr("d", diagonal);
+	
+	var node = svg.selectAll(".node")
+	      .data(nodes)
+	    .enter().append("g")
+	      .attr("class", "node")
+	      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+	
+	node.append("circle")
+	      .attr("r", 4.5);
+	
+	node.append("text")
+	      .attr("dx", function(d) { return d.children ? -8 : 8; })
+	      .attr("dy", 3)
+	      .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+	      .text(function(d) { return d.name; });
+	
+	d3.select(self.frameElement).style("height", height + "px");
+	
+	$('#myModal').modal('show');
+}
+function type6(){
+	
+	$('.modal-title').text("Word Cloud");	
+	$('.forWordCloud').show();
+	$('.topics').click(type6a).removeClass("active").removeAttr("aria-pressed");
+	$('.categories').click(type6b).removeClass("active").removeAttr("aria-pressed");
+	$('.locations').click(type6c).removeClass("active").removeAttr("aria-pressed");
+	
+	$('#myModal').modal('show');
+}
+function type6a(){
+	
+	$(this).addClass("active");
+	$('.locations').removeClass("active").removeAttr("aria-pressed");
+	$('.categories').removeClass("active").removeAttr("aria-pressed");	
+	$(this).attr("aria-pressed","true");
+	$('svg').remove();
+	
+    var x = $('body').scope().wordTopics;
+    var str = JSON.stringify(x);
+    var json = $.parseJSON(str);
+    console.log(str);
+    var json2 = json.wordCloudTopics;
+	var fill = d3.scale.category20();
+	  d3.layout.cloud().size([960, 600])
+	      .words(json2.map(function(d) {
+	        return {text: d, size: 10 + Math.random() * 20};
+	      }))
+	      .padding(5)
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })	      
+	      .font("Impact")
+	      .fontSize(function(d) { return d.size; })
+	      .on("end", draw)
+	      .start();
+	  function draw(words) {
+	    d3.select(".modal-body").append("svg")
+	        .attr("width", 800)
+	        .attr("height", 600)
+	        .attr("class","center-block")
+	        .append("g")
+	        .attr("transform", "translate(320,200)")
+	        .selectAll("text")
+	        .data(words)
+	        .enter().append("text")
+	        .style("font-size", function(d) { return d.size + "px"; })
+	        .style("font-family", "Impact")
+	        .style("fill", function(d, i) { return fill(i); })
+	        .attr("transform", function(d) {
+	          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+	        })
+	        .text(function(d) { return d.text; });
+	  }		
+}
+function type6b(){
+	$(this).addClass("active");
+	$('.topics').removeClass("active").removeAttr("aria-pressed");
+	$('.locations').removeClass("active").removeAttr("aria-pressed");
+	$(this).attr("aria-pressed","true");
+	$('svg').remove();
+	
+    var x = $('body').scope().wordCategories;
+    var str = JSON.stringify(x);
+    var json = $.parseJSON(str);
+    console.log(str);
+    var json2 = json.wordCloudCategories;
+	var fill = d3.scale.category20();
+	  d3.layout.cloud().size([960, 600])
+	      .words(json2.map(function(d) {
+	        return {text: d, size: 10 + Math.random() * 20};
+	      }))
+	      .padding(5)
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })	      
+	      .font("Impact")
+	      .fontSize(function(d) { return d.size; })
+	      .on("end", draw)
+	      .start();
+	  function draw(words) {
+	    d3.select(".modal-body").append("svg")
+	        .attr("width", 800)
+	        .attr("height", 600)
+	        .attr("class","center-block")
+	      .append("g")
+	        .attr("transform", "translate(320,200)")
+	      .selectAll("text")
+	        .data(words)
+	      .enter().append("text")
+	        .style("font-size", function(d) { return d.size + "px"; })
+	        .style("font-family", "Impact")
+	        .style("fill", function(d, i) { return fill(i); })
+	        .style("display","block")
+	        .attr("transform", function(d) {
+	          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+	        })
+	        .text(function(d) { return d.text; });
+	  }			
+}
+function type6c(){
+	$(this).addClass("active");
+	$('.topics').removeClass("active").removeAttr("aria-pressed");
+	$('.categories').removeClass("active").removeAttr("aria-pressed");	
+	$(this).attr("aria-pressed","true");
+	$('svg').remove();
+	
+    var x = $('body').scope().wordLocations;
+    var str = JSON.stringify(x);
+    var json = $.parseJSON(str);
+    console.log(str);
+    var json2 = json.wordCloudLocations;
+	var fill = d3.scale.category20();
+	  d3.layout.cloud().size([960, 600])
+	      .words(json2.map(function(d) {
+	        return {text: d, size: 10 + Math.random() * 20};
+	      }))
+	      .padding(5)
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })	      
+	      .font("Impact")
+	      .fontSize(function(d) { return d.size; })
+	      .on("end", draw)
+	      .start();
+	  function draw(words) {
+	    d3.select(".modal-body").append("svg")
+	        .attr("width", 800)
+	        .attr("height", 600)
+	        .attr("class","center-block")
+	      .append("g")
+	        .attr("transform", "translate(320,200)")
+	      .selectAll("text")
+	        .data(words)
+	      .enter().append("text")
+	        .style("font-size", function(d) { return d.size + "px"; })
+	        .style("font-family", "Impact")
+	        .style("fill", function(d, i) { return fill(i); })
+	        .style("display","block")
+	        .attr("transform", function(d) {
+	          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+	        })
+	        .text(function(d) { return d.text; });
+	  }
+}
+</script>
+</body>
+</html>
+

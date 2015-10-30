@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<body>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="http://datamaps.github.io/scripts/datamaps.world.min.js?v=1"></script>
+  
+  <div id="container1" style="position: relative; width: 100%; height:100%;padding-top: 7%;"></div>
+ 
+     
+     <script>
+      var map = new Datamap({
+        scope: 'world',
+        responsive: true,
+        geographyConfig: {
+        hideAntarctica: false
+        },
+        element: document.getElementById('container1'),
+        projection: 'mercator',        //equirectangular 
+        fills: {
+          defaultFill: '#f0af0a',
+          lt50: 'rgba(0,244,244,0.9)',
+          gt50: 'red'
+        },
+      })
+     map.bubbles([{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:86,latitude:34},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:25},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:29},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:12,latitude:73},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:-52,latitude:14.64},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:97,latitude:12},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:53,latitude:15},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:10,latitude:20},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:87,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:80,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:89,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:92,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:95,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:96,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:97,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:72,latitude:40},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:72,latitude:40},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:72,latitude:40},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'185be152-2136-452b-a7d6-a36e1e0f7fb1',fillKey:'gt50',radius:5,longitude:-121.08297,latitude:35.54164},
+{name:'1b7105ad-0daf-4294-9412-1ec2bac2c57e',fillKey:'gt50',radius:5,longitude:0,latitude:0},
+{name:'99bd9085-3c06-4e89-b192-c7eb1327b9b8',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'f26b1dba-274a-41c2-ab8d-ddb921182ce4',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'911dd540-ea2d-4aaf-a194-1c65139c8b80',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'0b731713-36b9-4ed8-900a-87d1d29f5d59',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'00a293fc-24d1-4cc8-a655-42634266208b',fillKey:'gt50',radius:5,longitude:0,latitude:85},
+{name:'1ae90f96-ad6b-4b7f-a2ff-edc2f0088119',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'9381ce40-f2fb-4e99-b3d6-a789ed55ce8d',fillKey:'gt50',radius:5,longitude:-98.5,latitude:39.76},
+{name:'c283d67c-2f6e-4de0-9fd3-b10243a9228f',fillKey:'gt50',radius:5,longitude:0,latitude:85},
+{name:'003502f9-fca6-42ea-a713-bacab0378353',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'b666b07c-f706-452f-a11b-9d2e39885de0',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'3c375f6b-fafd-4bad-aa6a-1a52b908c883',fillKey:'gt50',radius:5,longitude:9.82167,latitude:46.7967},
+{name:'0908a7cf-2cca-407f-8ef0-b06dde3b3dd0',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'06a485e7-3965-47fd-b183-d78cc86c0da4',fillKey:'gt50',radius:5,longitude:35.72722,latitude:32.03917},
+{name:'0b731713-36b9-4ed8-900a-87d1d29f5d59',fillKey:'gt50',radius:5,longitude:110,latitude:22},
+{name:'00a293fc-24d1-4cc8-a655-42634266208b',fillKey:'gt50',radius:5,longitude:105,latitude:85},
+{name:'1ae90f96-ad6b-4b7f-a2ff-edc2f0088119',fillKey:'gt50',radius:5,longitude:79,latitude:22},
+{name:'9381ce40-f2fb-4e99-b3d6-a789ed55ce8d',fillKey:'gt50',radius:5,longitude:-98.5,latitude:39.76},
+{name:'c283d67c-2f6e-4de0-9fd3-b10243a9228f',fillKey:'gt50',radius:5,longitude:15,latitude:85},
+{name:'003502f9-fca6-42ea-a713-bacab0378353',fillKey:'gt50',radius:5,longitude:103,latitude:22},
+{name:'b666b07c-f706-452f-a11b-9d2e39885de0',fillKey:'gt50',radius:5,longitude:96,latitude:-150},
+{name:'3c375f6b-fafd-4bad-aa6a-1a52b908c883',fillKey:'gt50',radius:5,longitude:9.82167,latitude:46.7967},
+{name:'0908a7cf-2cca-407f-8ef0-b06dde3b3dd0',fillKey:'gt50',radius:5,longitude:79,latitude:22}], {
+       popupTemplate: function(geo, data) {
+         return "<div class='hoverinfo'>" + data.name + "</div>";
+       }
+     });
+    d3.select(window).on('resize', function() {
+        map.resize();
+    });    
+	var div = d3.select("body").selectAll("div").style("padding-bottom","90%");
+	var div2 = d3.selectAll('.datamaps-hoverover').on("mouseover",function(d) {
+			var $this = d3.select(this);
+			d3.selectAll('.datamaps-hoverover').style("padding-bottom","1%");
+	});
+     </script>
+</body>

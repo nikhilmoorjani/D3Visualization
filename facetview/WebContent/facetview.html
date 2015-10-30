@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>FacetView</title>
+<!--
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+-->
+
+  <script type="text/javascript" src="vendor/jquery/1.7.1/jquery-1.7.1.min.js"></script>
+
+  <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+  <script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>  
+
+  <script type="text/javascript" src="vendor/linkify/1.0/jquery.linkify-1.0-min.js"></script>  
+  
+  <link rel="stylesheet" href="vendor/jquery-ui-1.8.18.custom/jquery-ui-1.8.18.custom.css">
+  <script type="text/javascript" src="vendor/jquery-ui-1.8.18.custom/jquery-ui-1.8.18.custom.min.js"></script>
+
+  <script type="text/javascript" src="jquery.facetview.js"></script>
+
+  <link rel="stylesheet" href="css/facetview.css">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script type="text/javascript">
+jQuery(document).ready(function($) {
+  $('.facet-view-simple').facetview({
+    search_url: 'http://localhost:8080/solr/collection1/select?',
+    search_index: 'solr',
+    facets: [
+{'field':'topics', 'display': 'topics'},
+ {'field':'category', 'display': 'category'},
+ {'field':'location', 'display': 'location'} 
+    ],
+    paging: {
+      from: 0,
+      size: 10
+    }
+  });
+  // set up form
+  $('.demo-form').submit(function(e) {
+    e.preventDefault();
+    var $form = $(e.target);
+    var _data = {};
+    $.each($form.serializeArray(), function(idx, item) {
+      _data[item.name] = item.value;
+    });
+    $('.facet-view-here').facetview(_data);
+  });
+});
+  </script>
+</head>
+
+<body>
+
+<div class="container"> 
+  <div class="content">
+    <div class="page-header">
+      <h1>
+        FacetView <small>Pure Javascript Frontend for SOLR</small>
+      </h1>
+    </div>
+
+    <h2>CS572 Faceted Search Interface</h2>
+    <div class="facet-view-simple"></div>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Document Content</h4>
+	      </div>
+	      <div class="modal-body docContent">
+				<p>
+				</p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+  </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+<link rel='shortcut icon' href='favicon.ico' type='image/x-icon></link>
+<meta charset="UTF-8">
+<title>A simple introduction to AngularJS - Part 2</title>    
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="angular.js"></script>
+<script src="d3.v3.min.js"></script>
+<script src="d3.layout.cloud.js"></script>
+<script type="text/javascript" src="form.js"></script>
+<style type="text/css">
+	.bs-example{
+		margin: 20px;
+	}
+	ul{
+list-style-type:none;
+}
+li{
+padding-left:80px;
+padding-top:50px;
+}
+</style>
+
+</head>
+<body ng-controller="UserController as usr">
+<h1 class="well"> Welcome to D3</h1>
+<div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for..." data-ng-model="techinfoweb">
+      <input type="text" class="form-control" placeholder="fq....." data-ng-model="tech">
+      <span class="input-group-btn">
+        <button id="searchbtn" class="btn btn-default" type="button" ng-click="usr.urlCreate(techinfoweb)">Go!</button>
+      </span>
+    </div>
+    {{techinfoweb}}{{tech}}
+    <label>{{word}}</label>
+    <p></p>
+<div class="bs-example">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#sectionA">Section A</a></li>
+        <li><a data-toggle="tab" href="#sectionB">Section B</a></li>
+        <li><a data-toggle="tab" href="#sectionB">Section C</a></li>
+    </ul>
+  <div class="tab-content">
+        <div id="sectionA" class="tab-pane fade in active" >
+        	<button ng-click="usr.tab=false">Back</button>
+        	<div  ng-hide="usr.tab">
+            <h3>Section A</h3>
+            <ul >
+            <li style="float:left">
+            <figure>
+          <a ng-click="usr.createUser()"><img src="bubblechart.png"></a>
+            	<figcaption>Bubble Chart</figcaption>
+            	</figure>
+            </li>
+            <li style="float:left">
+            <figure>
+            	<a><img src="dendograph.png"></a>
+           		 <figcaption>Dendogram</figcaption>
+           		 </figure>
+            </li>
+            <li style="float:left">
+            <figure>
+            	<img src="calenderview.png">
+            	<figcaption>Calender View</figcaption>
+            	</figure>
+            </li>
+            <li style="float:left">
+            <figure>
+            	<img src="circlepacking.png">
+            	<figcaption>Circle packing</figcaption>
+            	</figure>
+            </li>
+            <li style="float:left">
+            <figure>
+            	<img src="wordcloud.png" class="wordcloud">
+            	<figcaption>Word Cloud</figcaption>
+            	</figure>
+            </li>
+            <li style="float:left">
+            <figure>
+            	<img id='zxcv' src="datamaps.png">
+            	<figcaption>Data Maps</figcaption>
+            	</figure>
+            </li>
+            </ul>
+            </div>
+            </div>
+        	 <div id="sectionB" class="tab-pane fade">
+            <h3>Section B</h3>
+            <p>Vestibulum nec erat eu nulla rhoncus fringilla ut non neque. Vivamus nibh urna, ornare id gravida ut, mollis a magna. Aliquam porttitor condimentum nisi, eu viverra ipsum porta ut. Nam hendrerit bibendum turpis, sed molestie mi fermentum id. Aenean volutpat velit sem. Sed consequat ante in rutrum convallis. Nunc facilisis leo at faucibus adipiscing.</p>
+        </div>
+        <div id="sectionC" class="tab-pane fade">
+            <h3>Section B</h3>
+            <p>Vestibulum nec erat eu nulla rhoncus fringilla ut non neque. Vivamus nibh urna, ornare id gravida ut, mollis a magna. Aliquam porttitor condimentum nisi, eu viverra ipsum porta ut. Nam hendrerit bibendum turpis, sed molestie mi fermentum id. Aenean volutpat velit sem. Sed consequat ante in rutrum convallis. Nunc facilisis leo at faucibus adipiscing.</p>
+        </div>
+        	</div>
+<script>
+$(document).ready(function(){
+	$('#zxcv').click(function(){
+    var x = $('body').scope().word;
+    console.log(x);
+    //var json = $.parseJSON(x);
+    var str = JSON.stringify(x);
+    var json = $.parseJSON(str);
+    console.log(str);
+    var json2 = json.wordCloudCategories;
+	var fill = d3.scale.category20();
+	  d3.layout.cloud().size([300, 300])
+	      .words(json2.map(function(d) {
+	        return {text: d, size: 10 + Math.random() * 90};
+	      }))
+	      .padding(5)
+	      .rotate(function() { return ~~(Math.random() * 2) * 90; })
+	      .font("Impact")
+	      .fontSize(function(d) { return d.size; })
+	      .on("end", draw)
+	      .start();
+	  function draw(words) {
+	    d3.select("body").append("svg")
+	        .attr("width", 300)
+	        .attr("height", 300)
+	      .append("g")
+	        .attr("transform", "translate(150,150)")
+	      .selectAll("text")
+	        .data(words)
+	      .enter().append("text")
+	        .style("font-size", function(d) { return d.size + "px"; })
+	        .style("font-family", "Impact")
+	        .style("fill", function(d, i) { return fill(i); })
+	        .attr("text-anchor", "middle")
+	        .attr("transform", function(d) {
+	          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+	        })
+	        .text(function(d) { return d.text; });
+	  }
+	});
+});
+</script>
+</body>
+</html>                                		
